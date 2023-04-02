@@ -22,10 +22,28 @@ public class PredictionSystem {
         System.out.println(output);
         Processors NewProcessor = new Processors();
         NewProcessor.Show();
+        try {
+            System.out.println("\n!!! Processor Added !!!");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         GPUs NewGpu = new GPUs();
         NewGpu.Show();
+        try {
+            System.out.println("\n!!! GPU Added !!!");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         RAMs NewRAM=new RAMs();
         NewRAM.Show();
+        try {
+            System.out.println("\n!!! RAM Added !!!");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -112,10 +130,12 @@ class Processors extends Laptop {
         double temp = value;
         System.out.print("Price of processor:- " + temp);
     }
+    
 }
 
 class GPUs extends Laptop {
     public void Show() {
+
         System.out.print("\033[H\033[2J");
         System.out.flush();
         System.out.println("GPUs:- ");

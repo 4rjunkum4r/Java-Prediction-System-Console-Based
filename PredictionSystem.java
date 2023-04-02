@@ -36,7 +36,7 @@ public class PredictionSystem {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        RAMs NewRAM=new RAMs();
+        RAMs NewRAM = new RAMs();
         NewRAM.Show();
         try {
             System.out.println("\n!!! RAM Added !!!");
@@ -130,7 +130,7 @@ class Processors extends Laptop {
         double temp = value;
         System.out.print("Price of processor:- " + temp);
     }
-    
+
 }
 
 class GPUs extends Laptop {

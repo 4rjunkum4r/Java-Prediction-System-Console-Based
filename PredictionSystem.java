@@ -93,7 +93,6 @@ class Processors extends Laptop {
         System.out.print("\n\tPlease select Processor:- ".toUpperCase());
         int SelectRow = Input.nextInt();
         try (BufferedReader File = new BufferedReader(new FileReader("Processors.csv"))) {
-
             while ((Line = File.readLine()) != null) {
                 String[] data = Line.split(CSVSplitBy);
                 if (CurrentRow == SelectRow - 1) {
@@ -109,11 +108,11 @@ class Processors extends Laptop {
                 } else {
                     System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
                     Waiting();
+                    return 0;
                 }
                 CurrentRow++;
 
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,14 +155,11 @@ class GPUs extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                } else {
+                }else {
                     System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
                     Waiting();
+                    return 0;
                 }
                 CurrentRow++;
 
@@ -210,14 +206,11 @@ class Storages extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                } else {
+                }else {
                     System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
                     Waiting();
+                    return 0;
                 }
                 CurrentRow++;
 
@@ -264,14 +257,11 @@ class WebStores extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                } else {
+                }else {
                     System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
                     Waiting();
+                    return 0;
                 }
                 CurrentRow++;
 
@@ -318,14 +308,11 @@ class RAMs extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                } else {
+                }else {
                     System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
                     Waiting();
+                    return 0;
                 }
                 CurrentRow++;
 

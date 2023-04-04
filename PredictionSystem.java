@@ -1,74 +1,48 @@
 import java.util.*;
 import java.io.*;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.GraphicsEnvironment;
 
 public class PredictionSystem {
 
     public static void main(String[] args) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int consoleWidth = (int) (screenSize.getWidth() * 0.75);
-        int consoleMaxWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
-        int spacesBefore = (consoleMaxWidth - consoleWidth) / 2;
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Laptop NewLaptop = new Laptop();
         LoadingBar NewBar = new LoadingBar();
-        NewBar.Loading();
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        String text = "Welcome to our Requirement Based Laptop Price Prediction system";
-        String output = String.format("%" + (spacesBefore + text.length()) + "s", text);
-        System.out.println(output);
         Processors NewProcessor = new Processors();
-        NewProcessor.Show();
-        try {
-            System.out.println("\n!!! Processor Added !!!");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         GPUs NewGpu = new GPUs();
-        NewGpu.Show();
-        try {
-            System.out.println("\n!!! GPU Added !!!");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        RAMs NewRAM = new RAMs();
-        NewRAM.Show();
-        try {
-            System.out.println("\n!!! RAM Added !!!");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        RAMs NewRam = new RAMs();
+        Storages NewStorage = new Storages();
+        WebStores NewWebStore = new WebStores();
+        NewLaptop.Clear();
+        System.out.println("Welcome to our Requirement Based Laptop Price Prediction system\n".toUpperCase());
+
+        double PredictedPrice = NewProcessor.Show() + NewGpu.Show() + NewRam.Show() + NewStorage.Show()
+                + NewWebStore.Show();
+        NewBar.Loading();
+        NewLaptop.Clear();
+        System.out.println("\nThe predicted price of requirement based laptop is :- ".toUpperCase() + PredictedPrice);
     }
 }
 
 class LoadingBar {
     public void Loading() {
-        int total = 100; // total number of iterations
-        int progress = 0; // current progress
+        int Total = 100;
+        int Progress = 0;
+        while (Progress <= Total) {
 
-        while (progress <= total) {
-
-            System.out.print("\rProgress: [");
-            int count = (int) (((double) progress / total) * 20);
+            System.out.print("\rPredicting: [".toUpperCase());
+            int count = (int) (((double) Progress / Total) * 20);
             for (int i = 0; i < count; i++) {
                 System.out.print("=");
             }
             for (int i = count; i < 20; i++) {
                 System.out.print(" ");
             }
-            System.out.print("] " + progress + "%");
+            System.out.print("] " + Progress + "%");
             try {
-                Thread.sleep(10); // simulate some work
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            progress++;
+            Progress++;
         }
         System.out.println("\n");
     }
@@ -79,82 +53,96 @@ class Laptop {
     String CSVSplitBy = ",";
     int SerialNumber = 1;
     Scanner Input = new Scanner(System.in);
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int consoleWidth = (int) (screenSize.getWidth() * 0.75);
-    int consoleMaxWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
-    int spacesBefore = (consoleMaxWidth - consoleWidth) / 2;
 
+    public void Waiting() {
+        try {
+            System.out.println("\n");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Clear();
+    }
+
+    public void Clear() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }
 
 class Processors extends Laptop {
-    public void Show() {
-        System.out.println("Processor");
+    public double Show() {
+        System.out.println("Processors Available :-".toUpperCase());
         try (BufferedReader File = new BufferedReader(new FileReader("Processors.csv"))) {
             while ((Line = File.readLine()) != null) {
                 String[] data = Line.split(CSVSplitBy);
-                System.out.println("\n\t" + SerialNumber + " " + data[0] + "\n");
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
                 SerialNumber++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Select();
+        return Select();
+
     }
 
-    public void Select() {
+    public double Select() {
         int CurrentRow = 0;
         int ColumnNumber = 1;
-        System.out.print("Please select processor:- ");
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select Processor:- ".toUpperCase());
         int SelectRow = Input.nextInt();
         try (BufferedReader File = new BufferedReader(new FileReader("Processors.csv"))) {
+
             while ((Line = File.readLine()) != null) {
                 String[] data = Line.split(CSVSplitBy);
                 if (CurrentRow == SelectRow - 1) {
                     if (ColumnNumber < data.length) {
                         double value = Double.parseDouble(data[ColumnNumber]);
-                        Price(value);
-                        break;
-                    } else {
-                        System.out.println("Column number is out of range");
-                        break;
+
+                        System.out.println("\n !!! Processor Added !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
                     }
+                } else {
+                    System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                    Waiting();
                 }
                 CurrentRow++;
+
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    public void Price(double value) {
-        double temp = value;
-        System.out.print("Price of processor:- " + temp);
+        return PredictedPrice;
     }
-
 }
 
 class GPUs extends Laptop {
-    public void Show() {
-
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        System.out.println("GPUs:- ");
+    public double Show() {
+        System.out.println("GPUs Available :-".toUpperCase());
         try (BufferedReader File = new BufferedReader(new FileReader("GPUs.csv"))) {
             while ((Line = File.readLine()) != null) {
                 String[] data = Line.split(CSVSplitBy);
-                System.out.println("\n\t" + SerialNumber + " " + data[0] + "\n");
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
                 SerialNumber++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Select();
+        return Select();
+
     }
 
-    public void Select() {
+    public double Select() {
         int CurrentRow = 0;
         int ColumnNumber = 1;
-        System.out.print("Please select GPU:- ");
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select gpu:- ".toUpperCase());
         int SelectRow = Input.nextInt();
         try (BufferedReader File = new BufferedReader(new FileReader("GPUs.csv"))) {
             while ((Line = File.readLine()) != null) {
@@ -162,47 +150,152 @@ class GPUs extends Laptop {
                 if (CurrentRow == SelectRow - 1) {
                     if (ColumnNumber < data.length) {
                         double value = Double.parseDouble(data[ColumnNumber]);
-                        Price(value);
-                        break;
+
+                        System.out.println("\n !!! gpu Added !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
                     } else {
-                        System.out.println("Column number is out of range");
-                        break;
+                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                        Waiting();
+                        return 0;
                     }
                 }
                 CurrentRow++;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return PredictedPrice;
+    }
+}
+
+class Storages extends Laptop {
+    public double Show() {
+        System.out.println("Storages Available :-".toUpperCase());
+        try (BufferedReader File = new BufferedReader(new FileReader("WebStores.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
+                SerialNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Select();
+
     }
 
-    public void Price(double value) {
-        double temp = value;
-        System.out.print("Price of GPUs:- " + temp);
+    public double Select() {
+        int CurrentRow = 0;
+        int ColumnNumber = 1;
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select storage:- ".toUpperCase());
+        int SelectRow = Input.nextInt();
+        try (BufferedReader File = new BufferedReader(new FileReader("WebStores.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                if (CurrentRow == SelectRow - 1) {
+                    if (ColumnNumber < data.length) {
+                        double value = Double.parseDouble(data[ColumnNumber]);
+
+                        System.out.println("\n !!! storage Added !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
+                    } else {
+                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                        Waiting();
+                        return 0;
+                    }
+                }
+                CurrentRow++;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return PredictedPrice;
+    }
+}
+
+class WebStores extends Laptop {
+    public double Show() {
+        System.out.println("WebStores Available :-".toUpperCase());
+        try (BufferedReader File = new BufferedReader(new FileReader("WebStores.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
+                SerialNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Select();
+
+    }
+
+    public double Select() {
+        int CurrentRow = 0;
+        int ColumnNumber = 1;
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select WebStore:- ".toUpperCase());
+        int SelectRow = Input.nextInt();
+        try (BufferedReader File = new BufferedReader(new FileReader("WebStores.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                if (CurrentRow == SelectRow - 1) {
+                    if (ColumnNumber < data.length) {
+                        double value = Double.parseDouble(data[ColumnNumber]);
+
+                        System.out.println("\n !!! WebStore Selected !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
+                    } else {
+                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                        Waiting();
+                        return 0;
+                    }
+                }
+                CurrentRow++;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return PredictedPrice;
     }
 }
 
 class RAMs extends Laptop {
-    public void Show() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        System.out.println("RAMs:- ");
+    public double Show() {
+        System.out.println("Rams Available :-".toUpperCase());
         try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
             while ((Line = File.readLine()) != null) {
                 String[] data = Line.split(CSVSplitBy);
-                System.out.println("\n\t" + SerialNumber + " " + data[0] + "\n");
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
                 SerialNumber++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Select();
+        return Select();
+
     }
 
-    public void Select() {
+    public double Select() {
         int CurrentRow = 0;
         int ColumnNumber = 1;
-        System.out.print("Please select RAM:- ");
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select ram:- ".toUpperCase());
         int SelectRow = Input.nextInt();
         try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
             while ((Line = File.readLine()) != null) {
@@ -210,22 +303,25 @@ class RAMs extends Laptop {
                 if (CurrentRow == SelectRow - 1) {
                     if (ColumnNumber < data.length) {
                         double value = Double.parseDouble(data[ColumnNumber]);
-                        Price(value);
-                        break;
+
+                        System.out.println("\n !!! ram Added !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
                     } else {
-                        System.out.println("Column number is out of range");
-                        break;
+                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                        Waiting();
+                        return 0;
                     }
                 }
                 CurrentRow++;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    public void Price(double value) {
-        double temp = value;
-        System.out.print("Price of RAM:- " + temp);
+        return PredictedPrice;
     }
 }

@@ -5,7 +5,7 @@ public class PredictionSystem {
 
     public static void main(String[] args) {
         Laptop NewLaptop = new Laptop();
-        LoadingBar NewBar = new LoadingBar();
+        PredictingBar NewBar = new PredictingBar();
         Processors NewProcessor = new Processors();
         GPUs NewGpu = new GPUs();
         RAMs NewRam = new RAMs();
@@ -16,14 +16,14 @@ public class PredictionSystem {
 
         double PredictedPrice = NewProcessor.Show() + NewGpu.Show() + NewRam.Show() + NewStorage.Show()
                 + NewWebStore.Show();
-        NewBar.Loading();
+        NewBar.Predict();
         NewLaptop.Clear();
         System.out.println("\nThe predicted price of requirement based laptop is :- ".toUpperCase() + PredictedPrice);
     }
 }
 
-class LoadingBar {
-    public void Loading() {
+class PredictingBar {
+    public void Predict() {
         int Total = 100;
         int Progress = 0;
         while (Progress <= Total) {
@@ -104,10 +104,6 @@ class Processors extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
                 }
                 CurrentRow++;
@@ -155,12 +151,55 @@ class GPUs extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                }
+                } 
+                CurrentRow++;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return PredictedPrice;
+    }
+}
+
+class RAMs extends Laptop {
+    public double Show() {
+        System.out.println("Rams Available :-".toUpperCase());
+        try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                System.out.println("\n\t" + SerialNumber + " " + data[0]);
+                SerialNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Select();
+
+    }
+
+    public double Select() {
+        int CurrentRow = 0;
+        int ColumnNumber = 1;
+        double PredictedPrice = 0;
+        System.out.print("\n\tPlease select ram:- ".toUpperCase());
+        int SelectRow = Input.nextInt();
+        try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
+            while ((Line = File.readLine()) != null) {
+                String[] data = Line.split(CSVSplitBy);
+                if (CurrentRow == SelectRow - 1) {
+                    if (ColumnNumber < data.length) {
+                        double value = Double.parseDouble(data[ColumnNumber]);
+
+                        System.out.println("\n !!! ram Added !!!".toUpperCase());
+
+                        Waiting();
+
+                        return value;
+                    }
+                } 
                 CurrentRow++;
 
             }
@@ -206,10 +245,6 @@ class Storages extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
                 }
                 CurrentRow++;
@@ -257,63 +292,8 @@ class WebStores extends Laptop {
                         Waiting();
 
                         return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
                     }
-                }
-                CurrentRow++;
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return PredictedPrice;
-    }
-}
-
-class RAMs extends Laptop {
-    public double Show() {
-        System.out.println("Rams Available :-".toUpperCase());
-        try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
-            while ((Line = File.readLine()) != null) {
-                String[] data = Line.split(CSVSplitBy);
-                System.out.println("\n\t" + SerialNumber + " " + data[0]);
-                SerialNumber++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Select();
-
-    }
-
-    public double Select() {
-        int CurrentRow = 0;
-        int ColumnNumber = 1;
-        double PredictedPrice = 0;
-        System.out.print("\n\tPlease select ram:- ".toUpperCase());
-        int SelectRow = Input.nextInt();
-        try (BufferedReader File = new BufferedReader(new FileReader("RAMs.csv"))) {
-            while ((Line = File.readLine()) != null) {
-                String[] data = Line.split(CSVSplitBy);
-                if (CurrentRow == SelectRow - 1) {
-                    if (ColumnNumber < data.length) {
-                        double value = Double.parseDouble(data[ColumnNumber]);
-
-                        System.out.println("\n !!! ram Added !!!".toUpperCase());
-
-                        Waiting();
-
-                        return value;
-                    } else {
-                        System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
-                        Waiting();
-                        return 0;
-                    }
-                }
+                } 
                 CurrentRow++;
 
             }

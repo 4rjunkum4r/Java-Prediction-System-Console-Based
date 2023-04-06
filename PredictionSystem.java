@@ -152,7 +152,14 @@ class GPUs extends Laptop {
 
                         return value;
                     }
-                } 
+                }else {
+                    Clear();
+                    System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                    Waiting();
+                    
+                    break;
+
+                }
                 CurrentRow++;
 
             }
@@ -199,7 +206,13 @@ class RAMs extends Laptop {
 
                         return value;
                     }
-                } 
+                }else {
+                    Clear();
+                    System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                    Waiting();
+                    break;
+
+                }
                 CurrentRow++;
 
             }
@@ -246,6 +259,12 @@ class Storages extends Laptop {
 
                         return value;
                     }
+                }else {
+                    Clear();
+                    System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                    Waiting();
+                    break;
+
                 }
                 CurrentRow++;
 
@@ -293,7 +312,13 @@ class WebStores extends Laptop {
 
                         return value;
                     }
-                } 
+                } else {
+                    Clear();
+                    System.out.println("You've selected wrong option, so '0' will be price".toUpperCase());
+                    Waiting();
+                    break;
+
+                }
                 CurrentRow++;
 
             }
